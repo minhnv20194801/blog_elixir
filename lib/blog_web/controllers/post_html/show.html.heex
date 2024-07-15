@@ -1,0 +1,118 @@
+<%!-- <.back navigate={~p"/"}>Back to posts</.back>
+<.header>
+  Post <%= @post.id %>
+  <:subtitle>This is a post record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/posts/#{@post}/edit"}>
+      <.button>Edit post</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Title"><%= @post.title %></:item>
+  <:item title="Author"><%= @post.user.username %></:item>
+  <:item title="Content"><%= @post.content %></:item>
+  <:item title="Tags"><%= Enum.join(@tags, " ") %></:item>
+  <:item title="Published on"><%= @post.published_on %></:item>
+  <:item title="Visibility"><%= @post.visibility %></:item>
+</.list>
+
+<.simple_form :let={f} for={@comment_changeset} action={~p"/comments"}>
+  <.input type="hidden" field={f[:user_id]} value={@current_user && @current_user.id} />
+  <.input type="hidden" field={f[:post_id]} value={@post.id} />
+  <.input field={f[:content]} type="text" label="Content" />
+  <:actions>
+    <.button>Comment</.button>
+  </:actions>
+</.simple_form>
+
+
+<div class="mt-5 border-t border-b border-black">
+  <.header>
+    List of Comments
+  </.header>
+</div>
+
+<.table class="mt-0" id="comments" rows={@comments} row_click={&JS.navigate(~p"/comments/#{&1.post_id}")}>
+  <:col :let={comment}>
+    <h1>User <%=comment.user.username%>:</h1>
+    <%= comment.content %>
+  </:col>
+  <:action :let={comment}>
+    <div class="sr-only">
+      <.link navigate={~p"/comments/#{comment.post_id}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/comments/#{comment}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={comment}>
+    <.link href={~p"/comments/#{comment}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table> --%>
+
+<div class="flex gap-15 items-end pt-5 pb-5 w-full">
+  <h1 class="font-bold text-xl w-3/5 break-words"><%= @post.title %></h1>
+  <div class="ml-auto">
+    <.link href={~p"/posts/#{@post}/edit"}>
+      <.button>Edit post</.button>
+    </.link>
+    <.link href={~p"/posts/#{@post.id}"} method="delete" data-confirm="Are you sure?">
+      <.button>Delete post</.button>
+    </.link>
+  </div>
+</div>
+<div class="mt-5 mb-5">
+  <%= for tag <- @tags do %>
+    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+      #<%= tag %>
+    </span>
+  <% end %>
+</div>
+<img class="w-full" src={"#{@post.cover_image.url}"} alt="Post cover image" />
+<div class="w-full break-words mt-5 text-sm">
+  By: <%= @post.user.username %>
+</div>
+<div class="w-full break-words mt-5 text-sm italic">
+  Published on: <%= @post.published_on %>
+</div>
+<div class="w-full break-words mt-5">
+  <%= @post.content %>
+</div>
+<div class="w-full text-center mt-5 mb-5 text-sm italic border-b border-black">
+  End
+</div>
+
+<div class="mt-5">
+  <.header>
+    Comments
+  </.header>
+</div>
+
+<.simple_form :let={f} for={@comment_changeset} action={~p"/comments"}>
+  <.input type="hidden" field={f[:user_id]} value={@current_user && @current_user.id} />
+  <.input type="hidden" field={f[:post_id]} value={@post.id} />
+  <.input field={f[:content]} type="text" placeholder="Enter you comment here" />
+  <:actions>
+    <.button>Comment</.button>
+  </:actions>
+</.simple_form>
+
+<.table id="comments" rows={@comments} row_click={&JS.navigate(~p"/comments/#{&1.post_id}")}>
+  <:col :let={comment}>
+    <h1>User <%= comment.user.username %> commented:</h1>
+    <%= comment.content %>
+  </:col>
+  <:action :let={comment}>
+    <div class="sr-only">
+      <.link navigate={~p"/comments/#{comment.post_id}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/comments/#{comment}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={comment}>
+    <.link href={~p"/comments/#{comment}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>

@@ -1,0 +1,23 @@
+<.header>
+  Listing Comments From Post <%= @post_id %>
+  <:actions>
+    <.link href={~p"/posts/#{@post_id}"}>
+      <.button>New Comment</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="comments" rows={@comments} row_click={&JS.navigate(~p"/posts/#{&1.post_id}")}>
+  <:col :let={comment} label="Content"><%= comment.content %></:col>
+  <:action :let={comment}>
+    <div class="sr-only">
+      <.link navigate={~p"/posts/#{comment.post_id}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/comments/#{comment}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={comment}>
+    <.link href={~p"/comments/#{comment}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>

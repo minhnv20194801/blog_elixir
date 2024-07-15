@@ -1,0 +1,23 @@
+<.header>
+  Listing Coverimages
+  <:actions>
+    <.link href={~p"/coverimages/new"}>
+      <.button>New Cover image</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="coverimages" rows={@coverimages} row_click={&JS.navigate(~p"/coverimages/#{&1}")}>
+  <:col :let={cover_image} label="Url"><%= cover_image.url %></:col>
+  <:action :let={cover_image}>
+    <div class="sr-only">
+      <.link navigate={~p"/coverimages/#{cover_image}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/coverimages/#{cover_image}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={cover_image}>
+    <.link href={~p"/coverimages/#{cover_image}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>

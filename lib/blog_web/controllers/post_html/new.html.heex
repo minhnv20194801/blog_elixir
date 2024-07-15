@@ -1,0 +1,19 @@
+<.header>
+  New Post
+  <:subtitle>Use this form to manage post records in your database.</:subtitle>
+</.header>
+
+<div class="flex w-full gap-5">
+  <div class="w-full">
+    <.post_form
+      changeset={@changeset}
+      action={~p"/posts"}
+      current_user={@current_user}
+      tag_options={@tag_options}
+    />
+  </div>
+  <.link class="mt-auto" href="/tags/new">
+    <.button>NewTag!</.button>
+  </.link>
+</div>
+<.back navigate={~p"/"}>Back to posts</.back>

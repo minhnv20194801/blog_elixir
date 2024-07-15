@@ -1,0 +1,128 @@
+<header class="w-full sticky top-0 z-10">
+  <div class="px-4 sm:px-6 lg:px-8 pb-2 pt-2 sticky flex gap-10 bg-gray-100 w-full">
+    <.link href={~p"/"}>Home</.link>
+    <%!-- <.link href={~p"/posts"}>Blog</.link> --%>
+    <h1 class="ml-auto">
+      <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
+        <%= if @current_user do %>
+          <li class="text-[0.8125rem] leading-6 text-zinc-900">
+            Hello <%= @current_user.username %>!
+          </li>
+          <li>
+            <.link
+              href={~p"/posts/new"}
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              New Post
+            </.link>
+          </li>
+          <li>
+            <.link
+              href={~p"/users/settings"}
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              Settings
+            </.link>
+          </li>
+          <li>
+            <.link
+              href={~p"/users/log_out"}
+              method="delete"
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              Log out
+            </.link>
+          </li>
+        <% else %>
+          <li>
+            <.link
+              href={~p"/users/register"}
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              Register
+            </.link>
+          </li>
+          <li>
+            <.link
+              href={~p"/users/log_in"}
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              Log in
+            </.link>
+          </li>
+        <% end %>
+      </ul>
+    </h1>
+  </div>
+</header>
+<!-- Slider main container -->
+<div class="swiper-container mt-10">
+  <!-- Additional required wrapper -->
+  <div class="swiper-wrapper">
+    <!-- Slides -->
+    <div class="swiper-slide">
+      <div class="h-[240px] flex bg-cover text-white items-center text-9xl bg-[url('https://loremflickr.com/1920/360')]">
+        <p class="ml-auto mr-auto">WELCOME</p>
+      </div>
+    </div>
+    <div class="swiper-slide">
+      <div class="h-[240px] flex bg-cover text-white items-center text-9xl bg-[url('https://picsum.photos/1920/360')]">
+        <p class="ml-auto mr-auto">WELCOME</p>
+      </div>
+    </div>
+  </div>
+  <!-- If we need pagination -->
+  <div class="swiper-container-pagination text-center"></div>
+</div>
+
+<div class="w-full flex">
+  <.simple_form :let={f} class="w-1/5 ml-10" for={%{}} method="get" action={~p"/"}>
+    <div class="flex gap-5 items-end">
+      <.input label="Filter" field={f[:title]} type="text" placeholder="Search by blog Title" />
+      <.button class="">Search</.button>
+    </div>
+    <.input
+      field={f[:tag_ids]}
+      type="select"
+      label="By tags"
+      multiple={true}
+      options={@tag_options}
+      size={Enum.count(@tag_options)}
+    />
+  </.simple_form>
+  <div class="w-full flex flex-wrap gap-10 pt-10 m-auto text-center justify-center mr-10 ml-10 ">
+    <%= for post <- @posts do %>
+      <div class="max-w-sm rounded overflow-hidden shadow-lg w-1/3 max-h-[30rem] min-h-[30rem]">
+        <.link class="w-full min-h-[30rem] max-h-[30rem]" href={~p"/posts/#{post.id}"}>
+          <img class="w-full h-1/3 object-cover" src={post.cover_image.url} />
+          <div class="px-6 py-4">
+            <div class="font-bold text-xl mb-2"><%= post.title %></div>
+            <p class="italic text-sm"><%= post.published_on %></p>
+            <p class="text-gray-700 text-base">
+              <%= post.content %>
+            </p>
+          </div>
+          <div class="px-6 pt-4 pb-2">
+            <%= for tag <- post.tags do %>
+              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                #<%= tag %>
+              </span>
+            <% end %>
+          </div>
+        </.link>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  const swiper = new Swiper('.swiper-container', {
+    // Optional parameters
+    loop: true, 
+
+    // If we need pagination
+    pagination: {
+      el: '.swiper-container-pagination',
+    },
+  });
+</script>

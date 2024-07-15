@@ -1,0 +1,15 @@
+<.header>
+  Cover image <%= @cover_image.id %>
+  <:subtitle>This is a cover_image record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/coverimages/#{@cover_image}/edit"}>
+      <.button>Edit cover_image</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Url"><%= @cover_image.url %></:item>
+</.list>
+
+<.back navigate={~p"/coverimages"}>Back to coverimages</.back>
