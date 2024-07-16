@@ -91,8 +91,8 @@
 </div>
 
 <.simple_form :let={f} for={@comment_changeset} action={~p"/comments"}>
-  <.input type="hidden" field={f[:user_id]} value={@current_user && @current_user.id} />
-  <.input type="hidden" field={f[:post_id]} value={@post.id} />
+  <input type="hidden" field={f[:user_id]} value={@current_user && @current_user.id} />
+  <input type="hidden" field={f[:post_id]} value={@post.id} />
   <.input field={f[:content]} type="text" placeholder="Enter you comment here" />
   <:actions>
     <.button>Comment</.button>
