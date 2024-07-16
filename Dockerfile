@@ -24,6 +24,8 @@ ENV MIX_ENV=prod
 # Release the application
 RUN mix compile
 
+RUN mix tailwind blog
+RUN mix phx.digest
 RUN mix phx.digest.clean --all
 
 # Expose the application port
